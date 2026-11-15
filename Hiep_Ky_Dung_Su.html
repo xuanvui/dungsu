@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tra Cứu Niên Biểu - Trung Dụng Sự (60 Hoa Giáp)</title>
+<style>
+  :root {
+    --cat: #1a7f37;
+    --hung: #c41e3a;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --border: #dee2e6;
+    --primary: #0d6efd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; background: var(--bg); color: #212529; line-height: 1.5; padding: 16px; max-width: 1200px; margin: auto; }
+  h1 { font-size: 1.4rem; margin-bottom: 4px; color: #111; }
+  h2 { font-size: 1.15rem; margin: 16px 0 10px; color: #222; border-bottom: 2px solid var(--primary); padding-bottom: 4px; }
+  h3 { font-size: 1rem; margin: 14px 0 6px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .form-group { display: flex; flex-direction: column; min-width: 180px; }
+  label { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; color: #495057; }
+  select, button { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; }
+  button { background: var(--primary); color: white; border: none; cursor: pointer; font-weight: 600; height: 38px; }
+  button:hover { background: #0b5ed7; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin: 2px; }
+  .tag-cat { background: #d1e7dd; color: var(--cat); }
+  .tag-hung { background: #f8d7da; color: var(--hung); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 8px; }
+  th, td { border: 1px solid var(--border); padding: 5px 6px; text-align: center; }
+  th { background: #e9ecef; font-weight: 600; }
+  .result-box { border: 2px solid var(--primary); display: none; }
+  .ratio { font-size: 1.25rem; font-weight: 700; margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px; }
+  .warning { color: var(--hung); font-weight: 700; }
+  .good { color: var(--cat); font-weight: 700; }
+  .note { font-size: 0.85rem; color: #6c757d; margin-bottom: 12px; }
+  .son-card { margin: 10px 0; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; background: #fcfcfc; }
+  .empty-notice { background: #fff3cd; color: #664d03; border: 1px solid #ffecb5; padding: 12px; border-radius: 6px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>Tra Cứu Niên Biểu – Trung Dụng Sự (60 Hoa Giáp)</h1>
+<p class="note">Công cụ tra cứu cá nhân: Khai Sơn / Lập Hướng / Tu Phương (Tự động quy đổi Cung ↔ Sơn & Gộp Cát/Hung Năm + Tháng).</p>
+
+<div class="card">
+  <div class="row">
+    <div class="form-group">
+      <label for="yearSelect">1. Chọn Năm (60 Hoa Giáp):</label>
+      <select id="yearSelect" onchange="renderYearData(this.value)"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="huongSelect">2. Chọn Phương (8) hoặc Sơn (24):</label>
+      <select id="huongSelect">
+        <option value="">-- Chọn phương hoặc sơn --</option>
+        <optgroup label="8 Phương (Bát Quái)">
+          <option value="Bắc">Bắc (Khảm: Nhâm - Tý - Quý)</option>
+          <option value="Đông Bắc">Đông Bắc (Cấn: Sửu - Cấn - Dần)</option>
+          <option value="Đông">Đông (Chấn: Giáp - Mão - Ất)</option>
+          <option value="Đông Nam">Đông Nam (Tốn: Thìn - Tốn - Tỵ)</option>
+          <option value="Nam">Nam (Ly: Bính - Ngọ - Đinh)</option>
+          <option value="Tây Nam">Tây Nam (Khôn: Mùi - Khôn - Thân)</option>
+          <option value="Tây">Tây (Đoài: Canh - Dậu - Tân)</option>
+          <option value="Tây Bắc">Tây Bắc (Càn: Tuất - Càn - Hợi)</option>
+        </optgroup>
+        <optgroup label="24 Sơn Hướng">
+          <option value="Nhâm">Nhâm</option><option value="Tý">Tý</option><option value="Quý">Quý</option>
+          <option value="Sửu">Sửu</option><option value="Cấn">Cấn</option><option value="Dần">Dần</option>
+          <option value="Giáp">Giáp</option><option value="Mão">Mão</option><option value="Ất">Ất</option>
+          <option value="Thìn">Thìn</option><option value="Tốn">Tốn</option><option value="Tỵ">Tỵ</option>
+          <option value="Bính">Bính</option><option value="Ngọ">Ngọ</option><option value="Đinh">Đinh</option>
+          <option value="Mùi">Mùi</option><option value="Khôn">Khôn</option><option value="Thân">Thân</option>
+          <option value="Canh">Canh</option><option value="Dậu">Dậu</option><option value="Tân">Tân</option>
+          <option value="Tuất">Tuất</option><option value="Càn">Càn</option><option value="Hợi">Hợi</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="thangSelect">3. Chọn Tháng Âm (Tùy chọn):</label>
+      <select id="thangSelect">
+        <option value="0">-- Chỉ xem theo Năm --</option>
+        <option value="1">Tháng Giêng</option><option value="2">Tháng Hai</option>
+        <option value="3">Tháng Ba</option><option value="4">Tháng Tư</option>
+        <option value="5">Tháng Năm</option><option value="6">Tháng Sáu</option>
+        <option value="7">Tháng Bảy</option><option value="8">Tháng Tám</option>
+        <option value="9">Tháng Chín</option><option value="10">Tháng Mười</option>
+        <option value="11">Tháng Một (11)</option><option value="12">Tháng Chạp (12)</option>
+      </select>
+    </div>
+
+    <button onclick="traCuu()">Phân Tích & Tra Cứu</button>
+  </div>
+</div>
+
+<!-- KẾT QUẢ PHÂN TÍCH -->
+<div id="analysisResult" class="card result-box">
+  <h2>Kết Quả Phân Tích Dụng Sự</h2>
+  <div id="analysisContent"></div>
+</div>
+
+<!-- DỮ LIỆU CHI TIẾT NĂM -->
+<div class="card">
+  <h2>Bảng Dữ Liệu Gốc Năm: <span id="currentYearName">Bính Ngọ</span></h2>
+  <p class="note" id="yearMeta"></p>
+  <div id="detailDataContainer"></div>
+</div>
+
+<script>
+// ====================== BẢNG QUY ĐỔI CHUẨN PHONG THỦY ======================
+const phuongToSon = {
+  "Bắc": ["Nhâm", "Tý", "Quý"],
+  "Đông Bắc": ["Sửu", "Cấn", "Dần"],
+  "Đông": ["Giáp", "Mão", "Ất"],
+  "Đông Nam": ["Thìn", "Tốn", "Tỵ"],
+  "Nam": ["Bính", "Ngọ", "Đinh"],
+  "Tây Nam": ["Mùi", "Khôn", "Thân"],
+  "Tây": ["Canh", "Dậu", "Tân"],
+  "Tây Bắc": ["Tuất", "Càn", "Hợi"]
+};
+
+const quaiToSon = {
+  "Khảm": ["Nhâm", "Tý", "Quý"],
+  "Cấn": ["Sửu", "Cấn", "Dần"],
+  "Chấn": ["Giáp", "Mão", "Ất"],
+  "Tốn": ["Thìn", "Tốn", "Tỵ"],
+  "Ly": ["Bính", "Ngọ", "Đinh"],
+  "Khôn": ["Mùi", "Khôn", "Thân"],
+  "Đoài": ["Canh", "Dậu", "Tân"],
+  "Càn": ["Tuất", "Càn", "Hợi"],
+  "Thủy": ["Nhâm", "Tý", "Quý", "Hợi", "Thân", "Thìn"],
+  "Thổ": ["Sửu", "Cấn", "Thìn", "Mùi", "Khôn", "Tuất"]
+};
+
+// ====================== DỮ LIỆU 60 NĂM HOA GIÁP ======================
+// Hướng dẫn dán: Bôi đen trọn vẹn khối { name: "...", status: "input here" } của năm tương ứng và dán đè dữ liệu mới vào.
+const yearData = {
+  // ---------------- 1. NĂM BÍNH NGỌ (ĐÃ NHẬP ĐỦ) ----------------
+  BinhNgo: {
+    name: "Bính Ngọ",
+    meta: "Can: Hỏa - Chi: Hỏa - Nạp âm thuộc: Thủy",
+    cat: {
+      "Tuế đức": "Bính", "Tuế đức hợp": "Tân", "Tuế chi đức": "Hợi",
+      "Dương quý nhân": "Dậu", "Âm quý nhân": "Hợi", "Tuế Lộc": "Tỵ",
+      "Tuế Mã": "Thân", "Tấu thư": "Tốn", "Bác sĩ": "Càn"
+    },
+    caiSonHoangDao: {
+      "Tham lang": "Tốn Tân", "Cự Môn": "Cấn Bính",
+      "Vũ khúc": "Chấn Canh Hợi Mùi", "Văn khúc": "Càn Giáp"
+    },
+    thongThienKhieu: {
+      "Trước phương tam hợp": "Khôn Thân Canh Dậu Tân Tuất",
+      "Sau phương tam hợp": "Cấn Dần Giáp Mão Ất Thìn",
+      "12 cát sơn nên dùng": "Dần Ngọ Tuất Thân Tý Thìn"
+    },
+    tauMaLucNham: {
+      "Thần hậu": "Bính Ngọ", "Công tào": "Khôn Thân", "Thiên cương": "Tân Tuất",
+      "Thắng quang": "Nhâm Tý", "Truyền tổng": "Cấn Dần", "Hà khôi": "Tỵ Thìn"
+    },
+    tuLoiTamNguyen: {
+      "Thái dương": "Mùi", "Thái âm": "Dậu", "Long đức": "Sửu", "Phúc đức": "Mão"
+    },
+    hung: {
+      chung: {
+        "Thái tuế": "Ngọ", "Tuế phá": "Tý", "Tam sát": "Hợi Tý Sửu",
+        "Tọa sát hướng sát": "Nhâm Quý Bính Đinh", "Không vong": "Tốn Tân"
+      },
+      khaiSonHung: {
+        "Niên khắc sơn gia": "Càn Hợi Đoài Đinh",
+        "Âm phủ Thái tuế": "Khảm Khôn",
+        "Lục hại": "Sửu", "Tử phủ": "Hợi", "Cửu thoái": "Dậu"
+      },
+      lapHuongHung: {
+        "Tuần sơn La hầu": "Đinh", "Bệnh phủ": "Thìn"
+      },
+      tuPhuongHung: {
+        "Thiên quan phù": "Tỵ", "Địa quan phù": "Tuất", "Đại sát": "Ngọ",
+        "Đại tướng quân": "Mão", "Lực sĩ": "Khôn", "Tam sát": "Cấn",
+        "Tam quan": "Sửu", "Tam mệnh": "Dần", "Tuế hình": "Ngọ",
+        "Hoàng phan": "Tuất", "Cẩu vĩ": "Thìn", "Phi liêm": "Dần",
+        "Tang môn": "Thân", "Điếu khách": "Thìn", "Bạch hổ": "Dần",
+        "Kim thần": "Dần Mão Ngọ Mùi Tý Sửu", "Độc hỏa": "Đoài",
+        "Ngũ quỷ": "Tuất", "Phá bại ngũ quỷ": "Khôn"
+      }
+    },
+    thangCat: {
+      "Thiên đạo": ["Nam","Tây nam","Bắc","Tây","Tây bắc","Đông","Bắc","Đông bắc","Nam","Đông","Đông nam","Tây"],
+      "Thiên đức": ["Đinh","Khôn","Nhâm","Tân","Càn","Giáp","Quý","Cấn","Bính","Ất","Tốn","Canh"],
+      "Thiên đức hợp": ["Nhâm","","Đinh","Bính","","Kỷ","Mậu","","Tân","Canh","","Ất"],
+      "Nguyệt đức": ["Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh"],
+      "Nguyệt đức hợp": ["Tân","Kỷ","Đinh","Ất","Tân","Kỷ","Đinh","Ất","Tân","Kỷ","Đinh","Ất"],
+      "Nguyệt không": ["Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Ất"],
+      "Dương quý nhân": ["Chấn","Khôn","Khảm","Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài"],
+      "Âm quý nhân": ["Trung","Tốn","Chấn","Khôn","Khảm","Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly"],
+      "Phi thiên Lộc": ["Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài","Càn","Trung","Tốn","Chấn"],
+      "Phi thiên Mã": ["Khôn","Khảm","Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài","Càn"],
+      "1 bạch": ["Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly"],
+      "6 bạch": ["Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung"],
+      "8 bạch": ["Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài"],
+      "9 tử": ["Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn"]
+    },
+    khaiSonHungThang: {
+      "Nguyệt kiến": ["Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi","Tý","Sửu"],
+      "Nguyệt phá":  ["Thân","Dậu","Tuất","Hợi","Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi"],
+      "Nguyệt khắc sơn gia": ["", "", "Càn Đoài", "Hợi Đinh", "Ly Bính", "Nhâm Ất", "Chấn Tỵ", "Cấn Tỵ", "", "", "Thủy", "Thổ"],
+      "Âm phủ":      ["Càn","Khôn","Ly","Chấn","Cấn","Đoài","Khảm","Càn","Khôn","Tốn","Càn","Khôn"],
+      "Thái tuế":    ["Đoài","Khảm","Càn","Khôn","Tốn","Càn","Khôn","Ly","Chấn","Cấn","Đoài","Khảm"]
+    },
+    tuPhuongHungThang: {
+      "Thiên quan phù": ["Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh"],
+      "Địa quan phù":   ["Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Canh Đoài Tân","Tuất Càn Hợi","Trung"],
+      "Tiểu Nguyệt kiến":["Trung","Tuất Càn Hợi","Canh Đoài Tân","Sửu Cấn Dần","Bính Ly Đinh","Nhâm Khảm Quý","Mùi Khôn Thân","Giáp Chấn Ất","Thìn Tốn Tỵ","Trung","Tuất Càn Hợi","Canh Đoài Tân"],
+      "Đại Nguyệt kiến": ["Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi"],
+      "Phi đại sát":     ["Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý"],
+      "Bính Đinh độc hỏa":["Khôn Chấn","Khảm Khôn","Ly Khảm","Cấn Ly","Đoài Cấn","Càn Đoài","Trung Càn","Trung","Tốn Trung","Chấn Tốn","Khôn Chấn","Khảm Khôn"],
+      "Nguyệt du hỏa":   ["Khôn","Chấn","Khảm","Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn"],
+      "Kiếp sát":        ["Hợi","Thân","Tỵ","Dần","Hợi","Thân","Tỵ","Dần","Hợi","Thân","Tỵ","Dần"],
+      "Tai sát":         ["Tý","Dậu","Ngọ","Mão","Tý","Dậu","Ngọ","Mão","Tý","Dậu","Ngọ","Mão"],
+      "Nguyệt sát":      ["Sửu","Tuất","Mùi","Thìn","Sửu","Tuất","Mùi","Thìn","Sửu","Tuất","Mùi","Thìn"],
+      "Nguyệt hình":     ["Tỵ","Tý","Thìn","Thân","Ngọ","Sửu","Dần","Dậu","Mùi","Hợi","Mão","Tuất"],
+      "Nguyệt hại":      ["Tỵ","Thìn","Mão","Dần","Sửu","Tý","Hợi","Tuất","Dậu","Thân","Mùi","Ngọ"],
+      "Nguyệt yếm":      ["Tuất","Dậu","Thân","Mùi","Ngọ","Tỵ","Thìn","Mão","Dần","Sửu","Tý","Hợi"]
+    }
+  },
+
+  // ---------------- 2. NĂM ĐINH MÙI (ĐÃ NHẬP ĐỦ) ----------------
+  DinhMui: {
+    name: "Đinh Mùi",
+    meta: "Can: Hỏa - Chi: Thổ - Nạp âm thuộc: Thủy",
+    cat: {
+      "Tuế đức": "Nhâm", "Tuế đức hợp": "Đinh", "Tuế chi đức": "Tý",
+      "Dương quý nhân": "Hợi", "Âm quý nhân": "Dậu", "Tuế Lộc": "Ngọ",
+      "Tuế Mã": "Tỵ", "Tấu thư": "Tốn", "Bác sĩ": "Càn"
+    },
+    caiSonHoangDao: {
+      "Tham lang": "Khôn Ất", "Cự Môn": "Khảm Quý Thân Thìn",
+      "Vũ khúc": "Càn Giáp", "Văn khúc": "Chấn Canh Hợi Mùi"
+    },
+    thongThienKhieu: {
+      "Trước phương tam hợp": "Tốn Tỵ Bính Ngọ Đinh Mùi",
+      "Sau phương tam hợp": "Càn Hợi Nhâm Tý Quý Sửu",
+      "12 cát sơn nên dùng": "Hợi Mão Mùi Tỵ Dậu Sửu"
+    },
+    tauMaLucNham: {
+      "Thần hậu": "Tốn Tỵ", "Công tào": "Đinh Mùi", "Thiên cương": "Canh Dậu",
+      "Thắng quang": "Càn Hợi", "Truyền tổng": "Quý Sửu", "Hà khôi": "Giáp Mão"
+    },
+    tuLoiTamNguyen: {
+      "Thái dương": "Thân", "Thái âm": "Tuất", "Long đức": "Dần", "Phúc đức": "Thìn"
+    },
+    hung: {
+      chung: {
+        "Thái tuế": "Mùi", "Tuế phá": "Sửu", "Tam sát": "Thân Dậu Tuất",
+        "Tọa sát hướng sát": "Canh Tân Giáp Ất", "Phù thiên không vong": "Chấn Canh"
+      },
+      khaiSonHung: {
+        "Niên khắc sơn gia": "Giáp Dần Thìn Tốn Tuất Khảm Tân Thân Sửu Quý Khôn Canh Mùi",
+        "Âm phủ Thái tuế": "Càn Ly",
+        "Lục hại": "Tý", "Tử phủ": "Tý", "Cửu thoái": "Ngọ"
+      },
+      lapHuongHung: {
+        "Tuần sơn La hầu": "Khôn", "Bệnh phủ": "Ngọ"
+      },
+      tuPhuongHung: {
+        "Thiên quan phù": "Dần", "Địa quan phù": "Hợi", "Đại sát": "Mão",
+        "Đại tướng quân": "Mão", "Lực sĩ": "Khôn", "Tàm Thất": "Cấn",
+        "Tàm quan": "Sửu", "Tàm mệnh": "Dần", "Tuế hình": "Sửu",
+        "Hoàng phan": "Mùi", "Cẩu vĩ": "Sửu", "Phi liêm": "Mão",
+        "Tang môn": "Dậu", "Điếu khách": "Tỵ", "Bạch hổ": "Mão",
+        "Kim thần": "Dần Mão Tuất Hợi", "Độc hỏa": "Ly",
+        "Ngũ quỷ": "Dậu", "Phá bại ngũ quỷ": "Chấn"
+      }
+    },
+    thangCat: {
+      "Thiên đạo": ["Nam","Tây nam","Bắc","Tây","Tây bắc","Đông","Bắc","Đông bắc","Nam","Đông","Đông nam","Tây"],
+      "Thiên đức": ["Đinh","Khôn","Nhâm","Tân","Càn","Giáp","Quý","Cấn","Bính","Ất","Tốn","Canh"],
+      "Thiên đức hợp": ["Nhâm","","Đinh","Bính","","Kỷ","Mậu","","Tân","Canh","","Ất"],
+      "Nguyệt đức": ["Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh"],
+      "Nguyệt đức hợp": ["Tân","Kỷ","Đinh","Ất","Tân","Kỷ","Đinh","Ất","Tân","Kỷ","Đinh","Ất"],
+      "Nguyệt không": ["Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Giáp","Nhâm","Canh","Bính","Ất"],
+      "Dương quý nhân": ["Trung","Tốn","Chấn","Khôn","Khảm","Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly"],
+      "Âm quý nhân": ["Chấn","Khôn","Khảm","Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài"],
+      "Phi thiên Lộc": ["Ly","Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài","Càn","Trung","Tốn"],
+      "Phi thiên Mã": ["Cấn","Đoài","Càn","Trung","Khảm","Ly","Cấn","Đoài","Càn","Trung","Tốn","Chấn"],
+      "1 bạch": ["Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn"],
+      "6 bạch": ["Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn"],
+      "8 bạch": ["Cấn","Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly","Khảm"],
+      "9 tử": ["Ly","Khảm","Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn"]
+    },
+    khaiSonHungThang: {
+      "Nguyệt kiến": ["Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi","Tý","Sửu"],
+      "Nguyệt phá":  ["Thân","Dậu","Tuất","Hợi","Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi"],
+      "Nguyệt khắc sơn gia": ["", "", "Ly Bính", "Nhâm Ất", "Thủy", "Thổ", "Chấn Tỵ", "Cấn Tỵ", "", "", "", ""],
+      "Âm phủ":      ["Ly","Chấn","Cấn","Đoài","Khảm","Càn","Khôn","Tốn","Càn","Khôn","Ly","Chấn"],
+      "Thái tuế":    ["Càn","Khôn","Tốn","Càn","Khôn","Ly","Chấn","Cấn","Đoài","Khảm","Càn","Khôn"]
+    },
+    tuPhuongHungThang: {
+      "Thiên quan phù": ["Trung","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi"],
+      "Địa quan phù":   ["Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Canh Đoài Tân","Tuất Càn Hợi"],
+      "Tiểu Nguyệt kiến":["Bính Ly Đinh","Nhâm Khảm Quý","Mùi Khôn Thân","Giáp Chấn Ất","Thìn Tốn Tỵ","Trung","Tuất Càn Hợi","Canh Đoài Tân","Sửu Cấn Dần","Bính Ly Đinh","Nhâm Khảm Quý","Mùi Khôn Thân"],
+      "Đại Nguyệt kiến": ["Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất"],
+      "Phi đại sát":     ["Tuất Càn Hợi","Trung","Canh Đoài Tân","Tuất Càn Hợi","Trung","Thìn Tốn Tỵ","Giáp Chấn Ất","Mùi Khôn Thân","Nhâm Khảm Quý","Bính Ly Đinh","Sửu Cấn Dần","Canh Đoài Tân"],
+      "Bính Đinh độc hỏa":["Ly Khảm","Cấn Ly","Đoài Cấn","Càn Đoài","Trung Càn","Trung","Tốn Trung","Chấn Tốn","Khôn Chấn","Khảm Khôn","Ly Khảm","Cấn Ly"],
+      "Nguyệt du hỏa":   ["Khôn","Chấn","Tốn","Trung","Càn","Đoài","Cấn","Ly","Khảm","Khôn","Chấn","Tốn"],
+      "Kiếp sát":        ["Hợi","Thân","Tỵ","Dần","Hợi","Thân","Tỵ","Dần","Hợi","Thân","Tỵ","Dần"],
+      "Tai sát":         ["Tý","Dậu","Ngọ","Mão","Tý","Dậu","Ngọ","Mão","Tý","Dậu","Ngọ","Mão"],
+      "Nguyệt sát":      ["Sửu","Tuất","Mùi","Thìn","Sửu","Tuất","Mùi","Thìn","Sửu","Tuất","Mùi","Thìn"],
+      "Nguyệt hình":     ["Tỵ","Tý","Thìn","Thân","Ngọ","Sửu","Dần","Dậu","Mùi","Hợi","Mão","Tuất"],
+      "Nguyệt hại":      ["Tỵ","Thìn","Mão","Dần","Sửu","Tý","Hợi","Tuất","Dậu","Thân","Mùi","Ngọ"],
+      "Nguyệt yếm":      ["Tuất","Dậu","Thân","Mùi","Ngọ","Tỵ","Thìn","Mão","Dần","Sửu","Tý","Hợi"]
+    }
+  },
+
+  // ---------------- KHAY CÁC NĂM TIẾP THEO (BÔI ĐEN KHỐI {...} ĐỂ DÁN ĐÈ) ----------------
+  // Vòng thuận từ Mậu Thân -> Quý Hợi
+  MauThan:   { name: "Mậu Thân",   status: "input here" },
+  KyDau:     { name: "Kỷ Dậu",     status: "input here" },
+  CanhTuat:  { name: "Canh Tuất",  status: "input here" },
+  TanHoi:    { name: "Tân Hợi",    status: "input here" },
+  NhamTy:    { name: "Nhâm Tý",    status: "input here" },
+  QuySuu:    { name: "Quý Sửu",    status: "input here" },
+  GiapDan:   { name: "Giáp Dần",   status: "input here" },
+  AtMao:     { name: "Ất Mão",     status: "input here" },
+  BinhThin:  { name: "Bính Thìn",  status: "input here" },
+  DinhTy:    { name: "Đinh Tỵ",    status: "input here" },
+  MauNgo:    { name: "Mậu Ngọ",    status: "input here" },
+  KyMui:     { name: "Kỷ Mùi",     status: "input here" },
+  CanhThan:  { name: "Canh Thân",  status: "input here" },
+  TanDau:    { name: "Tân Dậu",    status: "input here" },
+  NhamTuat:  { name: "Nhâm Tuất",  status: "input here" },
+  QuyHoi:    { name: "Quý Hợi",    status: "input here" },
+
+  // Vòng tiếp từ Giáp Tý -> Ất Tỵ
+  GiapTy:    { name: "Giáp Tý",    status: "input here" },
+  AtSuu:     { name: "Ất Sửu",     status: "input here" },
+  BinhDan:   { name: "Bính Dần",   status: "input here" },
+  DinhMao:   { name: "Đinh Mão",   status: "input here" },
+  MauThin:   { name: "Mậu Thìn",   status: "input here" },
+  KyTy:      { name: "Kỷ Tỵ",      status: "input here" },
+  CanhNgo:   { name: "Canh Ngọ",   status: "input here" },
+  TanMui:    { name: "Tân Mùi",    status: "input here" },
+  NhamThan:  { name: "Nhâm Thân",  status: "input here" },
+  QuyDau:    { name: "Quý Dậu",    status: "input here" },
+  GiapTuat:  { name: "Giáp Tuất",  status: "input here" },
+  AtHoi:     { name: "Ất Hợi",     status: "input here" },
+  BinhTy:    { name: "Bính Tý",    status: "input here" },
+  DinhSuu:   { name: "Đinh Sửu",   status: "input here" },
+  MauDan:    { name: "Mậu Dần",    status: "input here" },
+  KyMao:     { name: "Kỷ Mão",     status: "input here" },
+  CanhThin:  { name: "Canh Thìn",  status: "input here" },
+  TanTy:     { name: "Tân Tỵ",     status: "input here" },
+  NhamNgo:   { name: "Nhâm Ngọ",   status: "input here" },
+  QuyMui:    { name: "Quý Mùi",    status: "input here" },
+  GiapThan:  { name: "Giáp Thân",  status: "input here" },
+  AtDau:     { name: "Ất Dậu",     status: "input here" },
+  BinhTuat:  { name: "Bính Tuất",  status: "input here" },
+  DinhHoi:   { name: "Đinh Hợi",   status: "input here" },
+  MauTy:     { name: "Mậu Tý",     status: "input here" },
+  KySuu:     { name: "Kỷ Sửu",     status: "input here" },
+  CanhDan:   { name: "Canh Dần",   status: "input here" },
+  TanMao:    { name: "Tân Mão",    status: "input here" },
+  NhamThin:  { name: "Nhâm Thìn",  status: "input here" },
+  QuyTy:     { name: "Quý Tỵ",     status: "input here" },
+  GiapNgo:   { name: "Giáp Ngọ",   status: "input here" },
+  AtMui:     { name: "Ất Mùi",     status: "input here" },
+  BinhThan:  { name: "Bính Thân",  status: "input here" },
+  DinhDau:   { name: "Đinh Dậu",   status: "input here" },
+  MauTuat:   { name: "Mậu Tuất",   status: "input here" },
+  KyHoi:     { name: "Kỷ Hợi",     status: "input here" },
+  CanhTy:    { name: "Canh Tý",    status: "input here" },
+  TanSuu:    { name: "Tân Sửu",    status: "input here" },
+  NhamDan:   { name: "Nhâm Dần",   status: "input here" },
+  QuyMao:    { name: "Quý Mão",    status: "input here" },
+  GiapThin:  { name: "Giáp Thìn",  status: "input here" },
+  AtTy:      { name: "Ất Tỵ",      status: "input here" }
+};
+
+// ====================== TỰ ĐỘNG TẠO DANH SÁCH NĂM TRONG DROPDOWN ======================
+function initYearDropdown() {
+  const select = document.getElementById("yearSelect");
+  select.innerHTML = "";
+  for (const [key, val] of Object.entries(yearData)) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = val.status === "input here" ? `${val.name} (Chưa nhập data)` : `${val.name} ✓`;
+    select.appendChild(opt);
+  }
+}
+
+// ====================== HÀM KIỂM TRA SƠN THUỘC CUNG / SƠN TRONG CHUỖI ======================
+function matchSon(dataStr, targetSon) {
+  if (!dataStr) return false;
+  const tokens = dataStr.split(/[\s,]+/).map(t => t.trim()).filter(Boolean);
+  for (let token of tokens) {
+    if (token === targetSon) return true;
+    if (quaiToSon[token] && quaiToSon[token].includes(targetSon)) return true;
+  }
+  return false;
+}
+
+// ====================== HÀM PHÂN TÍCH TRA CỨU ======================
+function traCuu() {
+  const yearKey = document.getElementById("yearSelect").value;
+  const d = yearData[yearKey];
+
+  if (!d || d.status === "input here") {
+    alert(`Năm ${d ? d.name : ""} hiện chưa có dữ liệu (đang để trống "input here"). Vui lòng dán dữ liệu của năm này vào code trước!`);
+    return;
+  }
+
+  const huong = document.getElementById("huongSelect").value;
+  const thang = parseInt(document.getElementById("thangSelect").value);
+  if (!huong) { alert("Vui lòng chọn Phương hoặc Sơn!"); return; }
+
+  const thangNames = ["","Giêng","Hai","Ba","Tư","Năm","Sáu","Bảy","Tám","Chín","Mười","Một (11)","Chạp (12)"];
+  let sonsToCheck = phuongToSon[huong] ? phuongToSon[huong] : [huong];
+
+  let html = `<p><strong>Năm:</strong> ${d.name} | <strong>Đối tượng xét:</strong> ${huong} (${sonsToCheck.join(" - ")}) ${thang > 0 ? `| <strong>Tháng:</strong> ${thangNames[thang]}` : ""}</p>`;
+
+  let totalCat = 0, totalHung = 0;
+  let sonDetailsHtml = "";
+
+  sonsToCheck.forEach(son => {
+    let cats = [], hungs = [];
+
+    // 1. Quét CÁT NĂM
+    for (const [k, v] of Object.entries(d.cat)) if (matchSon(v, son)) cats.push(`${k} (Năm)`);
+    for (const [k, v] of Object.entries(d.caiSonHoangDao)) if (matchSon(v, son)) cats.push(`${k} [Hoàng Đạo]`);
+    for (const [k, v] of Object.entries(d.thongThienKhieu)) if (matchSon(v, son)) cats.push(`${k}`);
+    for (const [k, v] of Object.entries(d.tuLoiTamNguyen)) if (matchSon(v, son)) cats.push(`${k} [Tứ Lợi]`);
+
+    // 2. Quét HUNG NĂM
+    for (const [k, v] of Object.entries(d.hung.chung)) if (matchSon(v, son)) hungs.push(`⛔ ${k} (Năm)`);
+    for (const [k, v] of Object.entries(d.hung.khaiSonHung)) if (matchSon(v, son)) hungs.push(`⛔ [Khai Sơn] ${k}`);
+    for (const [k, v] of Object.entries(d.hung.lapHuongHung)) if (matchSon(v, son)) hungs.push(`⛔ [Lập Hướng] ${k}`);
+    for (const [k, v] of Object.entries(d.hung.tuPhuongHung)) if (matchSon(v, son)) hungs.push(`[Tu Phương] ${k}`);
+
+    // 3. Nếu có chọn THÁNG -> Quét thêm CÁT & HUNG CỦA THÁNG
+    if (thang >= 1 && thang <= 12) {
+      const idx = thang - 1;
+      if (d.thangCat) {
+        for (const [k, arr] of Object.entries(d.thangCat)) {
+          if (arr[idx] && matchSon(arr[idx], son)) cats.push(`${k} (Tháng ${thangNames[thang]})`);
+        }
+      }
+      if (d.khaiSonHungThang) {
+        for (const [k, arr] of Object.entries(d.khaiSonHungThang)) {
+          if (arr[idx] && matchSon(arr[idx], son)) hungs.push(`⛔ [Khai Sơn T.${thangNames[thang]}] ${k}`);
+        }
+      }
+      if (d.tuPhuongHungThang) {
+        for (const [k, arr] of Object.entries(d.tuPhuongHungThang)) {
+          if (arr[idx] && matchSon(arr[idx], son)) hungs.push(`[Tu Phương T.${thangNames[thang]}] ${k}`);
+        }
+      }
+    }
+
+    totalCat += cats.length;
+    totalHung += hungs.length;
+
+    sonDetailsHtml += `<div class="son-card">
+      <strong>Sơn ${son}</strong> (Cát: <span class="good">${cats.length}</span> | Hung: <span class="warning">${hungs.length}</span>)
+      <div style="margin-top:6px">${cats.length ? cats.map(c => `<span class="tag tag-cat">${c}</span>`).join("") : "<span class='note'>Không có cát tinh nổi bật</span>"}</div>
+      <div style="margin-top:4px">${hungs.length ? hungs.map(h => `<span class="tag tag-hung">${h}</span>`).join("") : "<span class='good'>✓ Không phạm hung sát</span>"}</div>
+    </div>`;
+  });
+
+  const sum = totalCat + totalHung;
+  const catPct = sum ? Math.round((totalCat / sum) * 100) : 0;
+  html += `<div class="ratio">Tổng hợp điểm số: <span class="good">${catPct}% Cát (${totalCat})</span> – <span class="warning">${100 - catPct}% Hung (${totalHung})</span></div>`;
+  html += sonDetailsHtml;
+
+  document.getElementById("analysisContent").innerHTML = html;
+  const resBox = document.getElementById("analysisResult");
+  resBox.style.display = "block";
+  resBox.scrollIntoView({ behavior: "smooth" });
+}
+
+// ====================== HIỂN THỊ BẢNG GỐC BÊN DƯỚI ======================
+function renderYearData(yearKey) {
+  const d = yearData[yearKey];
+  if (!d) return;
+  document.getElementById("currentYearName").textContent = d.name;
+
+  if (d.status === "input here") {
+    document.getElementById("yearMeta").textContent = "";
+    document.getElementById("detailDataContainer").innerHTML = `<div class="empty-notice">⏳ Năm <strong>${d.name}</strong> đang ở trạng thái chờ nhập liệu (<code>input here</code>). Khi nào có dữ liệu của năm này, bạn chỉ cần bôi đen dòng <code>${yearKey}: { name: "${d.name}", status: "input here" }</code> trong code và dán đè vào là xong!</div>`;
+    return;
+  }
+
+  document.getElementById("yearMeta").textContent = d.meta;
+  const thangNames = ["Giêng","Hai","Ba","Tư","Năm","Sáu","Bảy","Tám","Chín","Mười","Một","Chạp"];
+  const buildTable = (title, obj, colorClass = "") => {
+    if (!obj) return "";
+    let t = `<h3 class="${colorClass}">${title}</h3><div style="overflow-x:auto"><table><thead><tr><th>Thần Sát / Mục</th>`;
+    thangNames.forEach(m => t += `<th>${m}</th>`);
+    t += `</tr></thead><tbody>`;
+    for (const [k, arr] of Object.entries(obj)) {
+      t += `<tr><td><strong>${k}</strong></td>`;
+      arr.forEach(val => t += `<td>${val || "-"}</td>`);
+      t += `</tr>`;
+    }
+    return t + `</tbody></table></div>`;
+  };
+
+  let html = "";
+  html += buildTable("1. Bảng Cát Tinh Theo Tháng", d.thangCat, "good");
+  html += buildTable("2. Bảng Khai Sơn Hung Theo Tháng", d.khaiSonHungThang, "warning");
+  html += buildTable("3. Bảng Tu Phương Hung Theo Tháng", d.tuPhuongHungThang, "warning");
+  document.getElementById("detailDataContainer").innerHTML = html;
+}
+
+// Khởi chạy ban đầu
+initYearDropdown();
+renderYearData("BinhNgo");
+</script>
+</body>
+</html>
